@@ -2,7 +2,6 @@ package dev.cerios.tiles;
 
 import dev.cerios.Config;
 
-import javax.swing.*;
 import java.awt.*;
 
 public class TileFactory {

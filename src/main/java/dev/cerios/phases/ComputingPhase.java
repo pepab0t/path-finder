@@ -2,8 +2,6 @@ package dev.cerios.phases;
 
 import dev.cerios.MainView;
 
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 
 public class ComputingPhase implements GamePhase {
     private Runnable endCallback;

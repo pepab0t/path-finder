@@ -7,7 +7,6 @@ import dev.cerios.MainView;
 import dev.cerios.Marker;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 

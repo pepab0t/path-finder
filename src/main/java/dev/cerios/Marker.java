@@ -9,7 +9,7 @@ public enum Marker {
     OBSTACLE(Config.OBSTACLE_COLOR),
     PATH(Config.PATH_COLOR);
 
-    private Color color;
+    private final Color color;
 
     Marker(Color color) {
         this.color = color;

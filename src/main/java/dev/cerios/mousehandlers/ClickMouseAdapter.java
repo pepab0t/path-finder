@@ -4,7 +4,6 @@ import dev.cerios.Config;
 import dev.cerios.tiles.GameTile;
 import dev.cerios.Marker;
 
-import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 

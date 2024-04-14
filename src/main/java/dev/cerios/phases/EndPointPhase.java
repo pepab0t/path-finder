@@ -1,11 +1,9 @@
 package dev.cerios.phases;
 
-import dev.cerios.tiles.GameTile;
 import dev.cerios.MainView;
 import dev.cerios.Marker;
 import dev.cerios.mousehandlers.ClickMouseAdapter;
 
-import java.awt.event.MouseAdapter;
 
 public class EndPointPhase implements GamePhase {
 
