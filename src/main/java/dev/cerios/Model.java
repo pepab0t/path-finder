@@ -9,7 +9,7 @@ public class Model {
 
     private Thread runner;
 
-    public void compute(Marker[][] field, String algorithm, BiConsumer<Integer, Integer> observer) {
+    public void compute(Marker[][] field, String algorithm, BiConsumer<Integer, Integer> resultObserver, BiConsumer<Integer, Integer> pathObserver) {
         runner = new Thread(() -> {
             Graph graph = new Graph(field.length * field[0].length);
 
@@ -51,6 +51,7 @@ public class Model {
             while (!queue.isEmpty()) {
                 Node node = queue.remove();
                 visited[node.i()][node.j()] = true;
+                pathObserver.accept(node.i(), node.j());
 
                 if (field[node.i()][node.j()] == Marker.END) {
                     result = node;
@@ -66,7 +67,7 @@ public class Model {
             }
 
             while (result != null) {
-                observer.accept(result.i(), result.j());
+                resultObserver.accept(result.i(), result.j());
                 result = result.prev;
             }
         });

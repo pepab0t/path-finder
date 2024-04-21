@@ -3,8 +3,8 @@ package dev.cerios;
 import java.util.Objects;
 
 public class Node {
-    private int i;
-    private int j;
+    private final int i;
+    private final int j;
 
     public Node prev = null;
 

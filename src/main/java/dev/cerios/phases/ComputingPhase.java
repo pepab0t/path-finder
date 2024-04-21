@@ -12,7 +12,10 @@ public class ComputingPhase implements GamePhase {
         view.setMouseAdapterToTiles(tile -> null);
         view.enableStartButton(false);
 
-        model.compute(view.getInput(), "", (i, j) -> view.markTile(i,j, Marker.PATH));
+        model.compute(view.getInput(),
+                "",
+                (i, j) -> view.markTile(i, j, Marker.RESULT),
+                (i, j) -> view.markTile(i, j, Marker.PATH));
     }
 
     private void end(MainView view) {
