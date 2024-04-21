@@ -5,6 +5,7 @@ import dev.cerios.tiles.TileFactory;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseListener;
 import java.util.function.Consumer;
@@ -16,10 +17,14 @@ public class MainView extends JFrame {
     private final GameTile[][] gridPanels = new GameTile[ROWS][COLS];
     private final TileFactory tileFactory;
 
-    private JButton startButton;
+    private final JButton startButton;
+    private final JButton restartButton;
 
     public MainView(TileFactory tileFactory) throws HeadlessException {
         this.tileFactory = tileFactory;
+        startButton = new JButton("Start");
+        startButton.setEnabled(false);
+        restartButton = new JButton("Restart");
     }
 
     public void initGui() {
@@ -28,7 +33,7 @@ public class MainView extends JFrame {
         setLayout(new BorderLayout(10, 0));
 
         JPanel gridPanel = new JPanel();
-        gridPanel.setLayout(new GridLayout(ROWS, COLS));
+        gridPanel.setLayout(new GridLayout(ROWS, COLS, X_SPACING, Y_SPACING));
 
         // Initialize the grid of panels
         for (int i = 0; i < ROWS; i++) {
@@ -42,27 +47,27 @@ public class MainView extends JFrame {
         JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.Y_AXIS));
 
-        startButton = new JButton("Start");
-        startButton.setEnabled(false);
         buttonPanel.add(startButton);
+        buttonPanel.add(restartButton);
+
 
         // Add the grid panel and button panel to the frame
         add(gridPanel, BorderLayout.CENTER);
         add(buttonPanel, BorderLayout.EAST);
     }
 
-    private void connectButton(JButton button, Runnable callback) {
-        button.addActionListener(e -> callback.run());
-    }
-
-    public void connectStartButton(Runnable callback) {
-        connectButton(startButton, callback);
+    public void connectStartButton(ActionListener listener) {
+        startButton.addActionListener(listener);
     }
 
     public void disconnectStartButton() {
         for (var listener : startButton.getActionListeners()) {
             startButton.removeActionListener(listener);
         }
+    }
+
+    public void connectRestartButton(ActionListener listener) {
+        restartButton.addActionListener(listener);
     }
 
     private void applyToAllTiles(Consumer<GameTile> tileConsumer) {
@@ -98,6 +103,14 @@ public class MainView extends JFrame {
         startButton.setEnabled(state);
     }
 
+    public void markTile(int i, int j, Marker marker) {
+        gridPanels[i][j].setMarker(marker);
+    }
+
+    public String getAlgorithm() {
+        return "bfs";
+    }
+
     public Marker[][] getInput() {
         Marker[][] markers = new Marker[ROWS][COLS];
 
@@ -108,6 +121,10 @@ public class MainView extends JFrame {
         }
 
         return markers;
+    }
+
+    public void clear() {
+        applyToAllTiles(tile -> tile.setMarker(Marker.NONE));
     }
 }
 

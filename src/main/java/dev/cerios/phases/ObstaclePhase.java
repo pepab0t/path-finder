@@ -2,6 +2,7 @@ package dev.cerios.phases;
 
 
 import dev.cerios.Config;
+import dev.cerios.Model;
 import dev.cerios.tiles.GameTile;
 import dev.cerios.MainView;
 import dev.cerios.Marker;
@@ -14,10 +15,10 @@ public class ObstaclePhase implements GamePhase {
     private Runnable endCallback;
 
     @Override
-    public void start(MainView view) {
+    public void start(MainView view, Model model) {
         view.enableStartButton(true);
         view.setMouseAdapterToTiles(this::createTileListener);
-        view.connectStartButton(() -> this.end(view));
+        view.connectStartButton(e -> this.end(view));
     }
 
     @Override
@@ -33,7 +34,6 @@ public class ObstaclePhase implements GamePhase {
             return;
         endCallback.run();
     }
-
 
     private MouseAdapter createTileListener(GameTile tile) {
         return new MouseAdapter() {

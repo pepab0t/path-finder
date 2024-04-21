@@ -7,8 +7,9 @@ import dev.cerios.tiles.TileFactory;
 public class Main {
     public static void main(String[] args) {
         MainView window = new MainView(new TileFactory());
+        Model model = new Model();
 
-        Controller controller = new Controller(window);
+        Controller controller = new Controller(window, model);
 
         controller.run();
     }
