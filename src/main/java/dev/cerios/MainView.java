@@ -14,7 +14,7 @@ import java.util.function.Function;
 import static dev.cerios.Config.*;
 
 public class MainView extends JFrame {
-    private final GameTile[][] gridPanels = new GameTile[ROWS][COLS];
+    private final GameTile[][] tiles = new GameTile[ROWS][COLS];
     private final TileFactory tileFactory;
 
     private final JButton startButton;
@@ -39,7 +39,7 @@ public class MainView extends JFrame {
         for (int i = 0; i < ROWS; i++) {
             for (int j = 0; j < COLS; j++) {
                 GameTile tile = tileFactory.create();
-                gridPanels[i][j] = tile;
+                tiles[i][j] = tile;
                 gridPanel.add(tile);
             }
         }
@@ -73,7 +73,7 @@ public class MainView extends JFrame {
     private void applyToAllTiles(Consumer<GameTile> tileConsumer) {
         for (int i = 0; i < ROWS; i++) {
             for (int j = 0; j < COLS; j++) {
-                var tile = gridPanels[i][j];
+                var tile = tiles[i][j];
                 tileConsumer.accept(tile);
             }
         }
@@ -104,7 +104,11 @@ public class MainView extends JFrame {
     }
 
     public void markTile(int i, int j, Marker marker) {
-        gridPanels[i][j].setMarker(marker);
+        tiles[i][j].setMarker(marker);
+    }
+
+    public Marker getMarker(int i, int j) {
+        return tiles[i][j].getMarker();
     }
 
     public String getAlgorithm() {
@@ -116,7 +120,7 @@ public class MainView extends JFrame {
 
         for (int i = 0; i < ROWS; i++) {
             for (int j = 0; j < COLS; j++) {
-                markers[i][j] = gridPanels[i][j].getMarker();
+                markers[i][j] = tiles[i][j].getMarker();
             }
         }
 

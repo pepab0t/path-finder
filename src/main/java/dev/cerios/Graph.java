@@ -12,8 +12,6 @@ public class Graph {
     private Node startNode;
     private Node endNode;
 
-    private static final int[] dr = new int[]{1, -1, 0, 0};
-    private static final int[] dc = new int[]{0, 0, 1, -1};
 
     public Graph(int size) {
         this.matrix = new ArrayMatrix(size, size);
@@ -40,9 +38,9 @@ public class Graph {
             for (int j = 0; j < cols; j++) {
                 if (field[i][j] == Marker.OBSTACLE) continue;
 
-                for (int k = 0; k < dr.length; k++) {
-                    int rr = i + dr[k];
-                    int cc = j + dc[k];
+                for (int k = 0; k < Config.dr.length; k++) {
+                    int rr = i + Config.dr[k];
+                    int cc = j + Config.dc[k];
 
                     if (rr >= rows || rr < 0 || cc >= cols || cc < 0)
                         continue;

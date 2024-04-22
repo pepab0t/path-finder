@@ -17,4 +17,7 @@ public class Config {
     public static final Color RESULT_COLOR = Color.BLUE;
     public static final Color HOVER_COLOR = Color.ORANGE;
     public static final Color PATH_COLOR = Color.ORANGE;
+
+    public static final int[] dr = new int[]{1, -1, 0, 0};
+    public static final int[] dc = new int[]{0, 0, 1, -1};
 }

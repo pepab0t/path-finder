@@ -35,5 +35,3 @@ public class GameTile extends JPanel {
         return !marker.equals(Marker.NONE);
     }
 }
-
-// VXNtxJtqIHNlLCB6Ym/FvsWIdWp1IHR2xa9qIMO6c23Em3YuClA=

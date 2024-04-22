@@ -14,7 +14,10 @@ public class ComputingPhase implements GamePhase {
 
         model.compute(view.getInput(),
                 "",
-                (i, j) -> view.markTile(i, j, Marker.RESULT),
+                (i, j) -> {
+                    Marker currentMarker = view.getMarker(i, j);
+                    if (currentMarker != Marker.END && currentMarker != Marker.START) view.markTile(i, j, Marker.RESULT);
+                },
                 (i, j) -> view.markTile(i, j, Marker.PATH));
     }
 
