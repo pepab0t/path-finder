@@ -6,26 +6,11 @@ import dev.cerios.Model;
 import dev.cerios.mousehandlers.ClickMouseAdapter;
 
 
-public class EndPointPhase implements GamePhase {
-
-    private Runnable endCallback;
-
-    private void end() {
-        if (endCallback == null)
-            return;
-        endCallback.run();
-    }
+public class EndPointPhase extends GamePhaseTemplate {
 
     @Override
     public void start(MainView view, Model model) {
         view.setMouseAdapterToTiles(tile -> new ClickMouseAdapter(tile, Marker.END));
         view.setClickObserverToTiles(this::end);
     }
-
-    @Override
-    public EndPointPhase onEnd(Runnable runnable) {
-        endCallback = runnable;
-        return this;
-    }
-
 }

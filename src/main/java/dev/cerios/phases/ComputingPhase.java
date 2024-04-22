@@ -4,8 +4,7 @@ import dev.cerios.MainView;
 import dev.cerios.Marker;
 import dev.cerios.Model;
 
-public class ComputingPhase implements GamePhase {
-    private Runnable endCallback;
+public class ComputingPhase extends GamePhaseTemplate {
 
     @Override
     public void start(MainView view, Model model) {
@@ -21,14 +20,8 @@ public class ComputingPhase implements GamePhase {
                 (i, j) -> view.markTile(i, j, Marker.PATH));
     }
 
-    private void end(MainView view) {
+    protected void end(MainView view, Model model) {
         view.enableStartButton(true);
-        if (endCallback != null) endCallback.run();
-    }
-
-    @Override
-    public ComputingPhase onEnd(Runnable runnable) {
-        endCallback = runnable;
-        return this;
+        super.end();
     }
 }

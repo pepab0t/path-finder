@@ -11,9 +11,7 @@ import javax.swing.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-public class ObstaclePhase implements GamePhase {
-    private Runnable endCallback;
-
+public class ObstaclePhase extends GamePhaseTemplate {
     @Override
     public void start(MainView view, Model model) {
         view.enableStartButton(true);
@@ -21,23 +19,13 @@ public class ObstaclePhase implements GamePhase {
         view.connectStartButton(e -> this.end(view));
     }
 
-    @Override
-    public ObstaclePhase onEnd(Runnable runnable) {
-        endCallback = runnable;
-        return this;
-    }
-
     private void end(MainView view) {
         view.disconnectStartButton();
-
-        if (endCallback == null)
-            return;
-        endCallback.run();
+        super.end();
     }
 
     private MouseAdapter createTileListener(GameTile tile) {
         return new MouseAdapter() {
-
             private final Marker marker = Marker.OBSTACLE;
 
             @Override
