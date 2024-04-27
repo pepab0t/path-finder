@@ -26,6 +26,10 @@ public class Controller {
             nextPhaseIndex = 0;
             nextPhase();
         });
+
+        view.connectRandomButton(e -> {
+            view.generateRandomObstacles();
+        });
     }
 
     private void nextPhase() {

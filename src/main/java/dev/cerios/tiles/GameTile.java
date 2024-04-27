@@ -8,8 +8,12 @@ public class GameTile extends JPanel {
 
     private Marker marker = Marker.NONE;
     private Runnable callback = null;
+    private final int row;
+    private final int col;
 
-    public GameTile() {
+    public GameTile(int row, int col) {
+        this.row = row;
+        this.col = col;
     }
 
     public void sendClickNotification() {
@@ -33,5 +37,13 @@ public class GameTile extends JPanel {
 
     public boolean isMarked() {
         return !marker.equals(Marker.NONE);
+    }
+
+    public int getRow() {
+        return row;
+    }
+
+    public int getCol() {
+        return col;
     }
 }
