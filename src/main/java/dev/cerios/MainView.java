@@ -5,14 +5,11 @@ import dev.cerios.tiles.TileFactory;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseListener;
-import java.beans.PropertyChangeListener;
-import java.util.LinkedList;
+import java.util.*;
 import java.util.List;
-import java.util.Random;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
@@ -175,39 +172,51 @@ public class MainView extends JFrame {
         }
     }
 
-    public List<GameTile> getNeighbors(int row, int col) {
-        List<GameTile> neighbors = new LinkedList<>();
+    public Collection<GameTile> getUnmarkedNeighbors(GameTile tile) {
+        return getUnmarkedNeighbors(tile.getRow(), tile.getCol());
+    }
+
+    public Collection<GameTile> getUnmarkedNeighbors(int row, int col) {
+        Collection<GameTile> neighbors = new HashSet<>();
 
         try {
-            neighbors.add(tiles[row+1][col]);
+            if (!tiles[row+1][col].isMarked())
+                neighbors.add(tiles[row+1][col]);
         } catch (ArrayIndexOutOfBoundsException e) {}
 
         try {
-            neighbors.add(tiles[row+1][col+1]);
+            if (!tiles[row+1][col+1].isMarked())
+                neighbors.add(tiles[row+1][col+1]);
         } catch (ArrayIndexOutOfBoundsException e) {}
 
         try {
-            neighbors.add(tiles[row+1][col-1]);
+            if (!tiles[row+1][col-1].isMarked())
+                neighbors.add(tiles[row+1][col-1]);
         } catch (ArrayIndexOutOfBoundsException e) {}
 
         try {
-            neighbors.add(tiles[row][col-1]);
+            if (!tiles[row][col-1].isMarked())
+                neighbors.add(tiles[row][col-1]);
         } catch (ArrayIndexOutOfBoundsException e) {}
 
         try {
-            neighbors.add(tiles[row][col+1]);
+            if (!tiles[row][col+1].isMarked())
+                neighbors.add(tiles[row][col+1]);
         } catch (ArrayIndexOutOfBoundsException e) {}
 
         try {
-            neighbors.add(tiles[row-1][col-1]);
+            if (!tiles[row-1][col-1].isMarked())
+                neighbors.add(tiles[row-1][col-1]);
         } catch (ArrayIndexOutOfBoundsException e) {}
 
         try {
-            neighbors.add(tiles[row-1][col]);
+            if (!tiles[row-1][col].isMarked())
+                neighbors.add(tiles[row-1][col]);
         } catch (ArrayIndexOutOfBoundsException e) {}
 
         try {
-            neighbors.add(tiles[row-1][col+1]);
+            if (!tiles[row-1][col+1].isMarked())
+                neighbors.add(tiles[row-1][col+1]);
         } catch (ArrayIndexOutOfBoundsException e) {}
 
         return neighbors;

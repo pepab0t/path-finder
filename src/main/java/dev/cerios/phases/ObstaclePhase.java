@@ -10,6 +10,9 @@ import dev.cerios.Marker;
 import javax.swing.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
 
 public class ObstaclePhase extends GamePhaseTemplate {
     private static final int OBSTACLE_MODE = 1;
@@ -46,7 +49,7 @@ public class ObstaclePhase extends GamePhaseTemplate {
 
     private MouseAdapter createTileListener(GameTile tile) {
         return new MouseAdapter() {
-            private final Marker marker = Marker.OBSTACLE;
+            private Collection<GameTile> lastNeighbours = Collections.emptySet();
 
             @Override
             public void mousePressed(MouseEvent e) {
@@ -57,13 +60,13 @@ public class ObstaclePhase extends GamePhaseTemplate {
                             return;
                         }
                         if (!tile.isMarked()) {
-                            tile.setMarker(marker);
+                            tile.setMarker(Marker.OBSTACLE);
                         }
                     }
                     case TERRAIN_MODE -> {
                         if (tile.getMarker() == Marker.NONE)
                             tile.setMarker(Marker.TERRAIN);
-                        view.getNeighbors(tile.getRow(), tile.getCol()).forEach(t -> {
+                        view.getUnmarkedNeighbors(tile).forEach(t -> {
                             if (t.getMarker() == Marker.NONE)
                                 t.setMarker(Marker.TERRAIN);
                         });
@@ -78,7 +81,6 @@ public class ObstaclePhase extends GamePhaseTemplate {
                         if (tile.isMarked()) {
                             return;
                         }
-
                         if (SwingUtilities.isLeftMouseButton(e)) {
                             tile.setMarker(Marker.OBSTACLE);
                         } else {
@@ -86,6 +88,15 @@ public class ObstaclePhase extends GamePhaseTemplate {
                         }
                     }
                     case TERRAIN_MODE -> {
+                        lastNeighbours = view.getUnmarkedNeighbors(tile);
+
+                        if (SwingUtilities.isLeftMouseButton(e)) {
+                            lastNeighbours.forEach(t -> t.setMarker(Marker.TERRAIN));
+                            tile.setMarker(Marker.TERRAIN);
+                        } else {
+                            lastNeighbours.forEach(t -> t.setBackground(Config.HOVER_COLOR));
+                            tile.setBackground(Config.HOVER_COLOR);
+                        }
                     }
                 }
             }
@@ -94,14 +105,17 @@ public class ObstaclePhase extends GamePhaseTemplate {
             public void mouseExited(MouseEvent e) {
                 switch (mode) {
                     case OBSTACLE_MODE -> {
-                        if (tile.isMarked()) {
-                            return;
-                        }
-
-                        if (!SwingUtilities.isLeftMouseButton(e)) {
+                        if (!SwingUtilities.isLeftMouseButton(e) && !tile.isMarked()) {
                             tile.setBackground(Marker.NONE.getColor());
                         }
-                    } case TERRAIN_MODE -> {}
+                    } case TERRAIN_MODE -> {
+                        if (!tile.isMarked())
+                            tile.setBackground(Marker.NONE.getColor());
+
+                        lastNeighbours.forEach(t -> {
+                                t.setMarker(Marker.NONE);
+                        });
+                    }
                 }
             }
         };

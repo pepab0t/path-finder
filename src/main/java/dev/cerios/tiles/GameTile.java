@@ -3,6 +3,7 @@ package dev.cerios.tiles;
 import dev.cerios.Marker;
 
 import javax.swing.*;
+import java.util.Objects;
 
 public class GameTile extends JPanel {
 
@@ -45,5 +46,17 @@ public class GameTile extends JPanel {
 
     public int getCol() {
         return col;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof GameTile gameTile)) return false;
+        return row == gameTile.row && col == gameTile.col && marker == gameTile.marker;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(marker, row, col);
     }
 }
