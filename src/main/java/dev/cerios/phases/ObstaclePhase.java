@@ -19,12 +19,17 @@ public class ObstaclePhase extends GamePhaseTemplate {
     private static final int TERRAIN_MODE = 2;
 
     private int mode = OBSTACLE_MODE;
-    private MainView view;
+
+    public ObstaclePhase(MainView view, Model model) {
+        super(view, model);
+    }
+
+    public ObstaclePhase(MainView view, Model model, Runnable endCallback) {
+        super(view, model, endCallback);
+    }
 
     @Override
-    public void start(MainView view, Model model) {
-        this.view = view;
-
+    public void start() {
         view.enableStartButton(true);
 
         view.setMouseAdapterToTiles(this::createTileListener);
@@ -56,11 +61,13 @@ public class ObstaclePhase extends GamePhaseTemplate {
                 switch (mode) {
                     case OBSTACLE_MODE -> {
                         if (SwingUtilities.isRightMouseButton(e)) {
+                            tile.setBackground(Marker.NONE.getColor());
                             tile.setMarker(Marker.NONE);
                             return;
                         }
                         if (!tile.isMarked()) {
                             tile.setMarker(Marker.OBSTACLE);
+                            tile.setBackground(Marker.OBSTACLE.getColor());
                         }
                     }
                     case TERRAIN_MODE -> {
@@ -82,6 +89,7 @@ public class ObstaclePhase extends GamePhaseTemplate {
                             return;
                         }
                         if (SwingUtilities.isLeftMouseButton(e)) {
+                            tile.setBackground(Marker.OBSTACLE.getColor());
                             tile.setMarker(Marker.OBSTACLE);
                         } else {
                             tile.setBackground(Config.HOVER_COLOR);

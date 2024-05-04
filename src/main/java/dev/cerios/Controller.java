@@ -7,20 +7,18 @@ import java.util.LinkedList;
 public class Controller {
 
     private final MainView view;
-    private final Model model;
     private int nextPhaseIndex = 0;
 
     private final LinkedList<GamePhase> phases = new LinkedList<>();
 
     public Controller(MainView view, Model model) {
         this.view = view;
-        this.model = model;
 
-        phases.add(new BlankPhase().onEnd(this::nextPhase));
-        phases.add(new StartPointPhase().onEnd(this::nextPhase));
-        phases.add(new EndPointPhase().onEnd(this::nextPhase));
-        phases.add(new ObstaclePhase().onEnd(this::nextPhase));
-        phases.add(new ComputingPhase().onEnd(null));
+        phases.add(new BlankPhase(view, model, this::nextPhase));
+        phases.add(new StartPointPhase(view, model, this::nextPhase));
+        phases.add(new EndPointPhase(view, model, this::nextPhase));
+        phases.add(new ObstaclePhase(view, model, this::nextPhase));
+        phases.add(new ComputingPhase(view, model, null));
 
         view.connectRestartButton(e -> {
             nextPhaseIndex = 0;
@@ -33,7 +31,7 @@ public class Controller {
     }
 
     private void nextPhase() {
-        phases.get(nextPhaseIndex++).start(view, model);
+        phases.get(nextPhaseIndex++).start();
     }
 
     public void run() {
@@ -41,5 +39,4 @@ public class Controller {
         nextPhase();
         view.run();
     }
-
 }

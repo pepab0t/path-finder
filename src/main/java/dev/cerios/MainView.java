@@ -129,8 +129,7 @@ public class MainView extends JFrame {
     private void applyToAllTiles(Consumer<GameTile> tileConsumer) {
         for (int i = 0; i < ROWS; i++) {
             for (int j = 0; j < COLS; j++) {
-                var tile = tiles[i][j];
-                tileConsumer.accept(tile);
+                tileConsumer.accept(tiles[i][j]);
             }
         }
     }
@@ -243,7 +242,10 @@ public class MainView extends JFrame {
     }
 
     public void clear() {
-        applyToAllTiles(tile -> tile.setMarker(Marker.NONE));
+        applyToAllTiles(tile -> {
+            tile.setBackground(Marker.NONE.getColor());
+            tile.setMarker(Marker.NONE);
+        });
     }
 }
 

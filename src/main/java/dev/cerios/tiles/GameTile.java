@@ -28,7 +28,6 @@ public class GameTile extends JPanel {
     }
 
     public void setMarker(Marker marker) {
-        this.setBackground(marker.getColor());
         this.marker = marker;
     }
 

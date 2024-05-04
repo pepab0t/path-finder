@@ -9,9 +9,11 @@ public class Model {
 
     private Thread runner;
 
-    public void compute(Marker[][] field, String algorithm, BiConsumer<Integer, Integer> resultObserver, BiConsumer<Integer, Integer> pathObserver) {
+    public void compute(Marker[][] field,
+                        String algorithm,
+                        BiConsumer<Integer, Integer> resultObserver,
+                        BiConsumer<Integer, Integer> pathObserver) {
         runner = new Thread(() -> {
-
             Graph graph = Graph.fromField(field);
 
             List<Graph.Node> result = graph.bfs();

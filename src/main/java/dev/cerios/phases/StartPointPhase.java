@@ -7,9 +7,16 @@ import dev.cerios.mousehandlers.ClickMouseAdapter;
 
 
 public class StartPointPhase extends GamePhaseTemplate {
+    public StartPointPhase(MainView view, Model model) {
+        super(view, model);
+    }
+
+    public StartPointPhase(MainView view, Model model, Runnable endCallback) {
+        super(view, model, endCallback);
+    }
 
     @Override
-    public void start(MainView view, Model model) {
+    public void start() {
         view.setMouseAdapterToTiles(tile -> new ClickMouseAdapter(tile, Marker.START));
         view.setClickObserverToTiles(this::end);
     }

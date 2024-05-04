@@ -20,6 +20,7 @@ public class ClickMouseAdapter extends MouseAdapter {
     @Override
     public void mousePressed(MouseEvent e) {
         if (e.getButton() == MouseEvent.BUTTON1 && !tile.isMarked()) {
+            tile.setBackground(marker.getColor());
             tile.setMarker(marker);
             tile.sendClickNotification();
         }
