@@ -18,7 +18,7 @@ public class Controller {
         phases.add(new StartPointPhase(view, model, this::nextPhase));
         phases.add(new EndPointPhase(view, model, this::nextPhase));
         phases.add(new ObstaclePhase(view, model, this::nextPhase));
-        phases.add(new ComputingPhase(view, model, null));
+        phases.add(new ComputingPhase(view, model));
 
         view.connectRestartButton(e -> {
             nextPhaseIndex = 0;

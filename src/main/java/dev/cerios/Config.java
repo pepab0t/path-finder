@@ -15,13 +15,13 @@ public class Config {
     public static final Color TERRAIN_COLOR = new Color(181, 127, 84);
     public static final Color START_COLOR = Color.GREEN;
     public static final Color END_COLOR = Color.RED;
-    public static final Color RESULT_COLOR = Color.BLUE;
+    public static final Color RESULT_COLOR = new Color(138, 225, 239);
     public static final Color HOVER_COLOR = Color.ORANGE;
-    public static final Color PATH_COLOR = Color.ORANGE;
+    public static final Color PATH_COLOR = new Color(255, 239, 213);
 
 //    public static final int[] dr = new int[]{1, -1, 0, 0, 2, -2, 0, 0, 1, 1, -1, -1, 2, 2, -2, -2 };
 //    public static final int[] dc = new int[]{0, 0, 1, -1, 0, 0, 2, -2, 1, -1, 1, -1, 2, -2, 2, -2};
 
-    public static final int[] dr = new int[]{1, -1, 0, 0};
-    public static final int[] dc = new int[]{0, 0, 1, -1};
+    public static final int[] dr = new int[]{0, -1, 1, 0};
+    public static final int[] dc = new int[]{1, 0, 0, -1};
 }

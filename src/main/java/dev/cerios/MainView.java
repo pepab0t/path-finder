@@ -30,7 +30,7 @@ public class MainView extends JFrame {
         this(new Random(), tileFactory);
     }
 
-    public MainView(Random random, TileFactory tileFactory)   {
+    public MainView(Random random, TileFactory tileFactory) {
         this.tileFactory = tileFactory;
         this.random = random;
 
@@ -114,12 +114,15 @@ public class MainView extends JFrame {
 
     public void generateRandomObstacles() {
         applyToAllTiles(tile -> {
-            if (tile.getMarker() == Marker.OBSTACLE)
+            if (tile.getMarker() == Marker.OBSTACLE){
+                tile.setBackground(Marker.NONE.getColor());
                 tile.setMarker(Marker.NONE);
+            }
             if (tile.getMarker() != Marker.NONE)
                 return;
 
             if (random.nextDouble() > 0.7) {
+                tile.setBackground(Marker.OBSTACLE.getColor());
                 tile.setMarker(Marker.OBSTACLE);
             }
         });
@@ -143,6 +146,10 @@ public class MainView extends JFrame {
         });
     }
 
+    public void setMouseAdapterToTiles(MouseAdapter adapter) {
+        setMouseAdapterToTiles(ignored -> adapter);
+    }
+
     public void setClickObserverToTiles(Runnable callback) {
         applyToAllTiles(tile -> tile.setClickObserver(callback));
     }
@@ -158,13 +165,21 @@ public class MainView extends JFrame {
         startButton.setEnabled(state);
     }
 
+    public void enableObstacleButton(boolean state) {
+        obstacleButton.setEnabled(state);
+    }
+
+    public void enableTerrainButton(boolean state) {
+        terrainButton.setEnabled(state);
+    }
+
     public void markTile(int i, int j, Marker marker) {
         tiles[i][j].setMarker(marker);
     }
 
     public GameTile getTile(int row, int col) {
         // TODO : handle index out of bounds
-        try{
+        try {
             return tiles[row][col];
         } catch (Exception e) {
             return null;
@@ -179,44 +194,52 @@ public class MainView extends JFrame {
         Collection<GameTile> neighbors = new HashSet<>();
 
         try {
-            if (!tiles[row+1][col].isMarked())
-                neighbors.add(tiles[row+1][col]);
-        } catch (ArrayIndexOutOfBoundsException e) {}
+            if (!tiles[row + 1][col].isMarked())
+                neighbors.add(tiles[row + 1][col]);
+        } catch (ArrayIndexOutOfBoundsException e) {
+        }
 
         try {
-            if (!tiles[row+1][col+1].isMarked())
-                neighbors.add(tiles[row+1][col+1]);
-        } catch (ArrayIndexOutOfBoundsException e) {}
+            if (!tiles[row + 1][col + 1].isMarked())
+                neighbors.add(tiles[row + 1][col + 1]);
+        } catch (ArrayIndexOutOfBoundsException e) {
+        }
 
         try {
-            if (!tiles[row+1][col-1].isMarked())
-                neighbors.add(tiles[row+1][col-1]);
-        } catch (ArrayIndexOutOfBoundsException e) {}
+            if (!tiles[row + 1][col - 1].isMarked())
+                neighbors.add(tiles[row + 1][col - 1]);
+        } catch (ArrayIndexOutOfBoundsException e) {
+        }
 
         try {
-            if (!tiles[row][col-1].isMarked())
-                neighbors.add(tiles[row][col-1]);
-        } catch (ArrayIndexOutOfBoundsException e) {}
+            if (!tiles[row][col - 1].isMarked())
+                neighbors.add(tiles[row][col - 1]);
+        } catch (ArrayIndexOutOfBoundsException e) {
+        }
 
         try {
-            if (!tiles[row][col+1].isMarked())
-                neighbors.add(tiles[row][col+1]);
-        } catch (ArrayIndexOutOfBoundsException e) {}
+            if (!tiles[row][col + 1].isMarked())
+                neighbors.add(tiles[row][col + 1]);
+        } catch (ArrayIndexOutOfBoundsException e) {
+        }
 
         try {
-            if (!tiles[row-1][col-1].isMarked())
-                neighbors.add(tiles[row-1][col-1]);
-        } catch (ArrayIndexOutOfBoundsException e) {}
+            if (!tiles[row - 1][col - 1].isMarked())
+                neighbors.add(tiles[row - 1][col - 1]);
+        } catch (ArrayIndexOutOfBoundsException e) {
+        }
 
         try {
-            if (!tiles[row-1][col].isMarked())
-                neighbors.add(tiles[row-1][col]);
-        } catch (ArrayIndexOutOfBoundsException e) {}
+            if (!tiles[row - 1][col].isMarked())
+                neighbors.add(tiles[row - 1][col]);
+        } catch (ArrayIndexOutOfBoundsException e) {
+        }
 
         try {
-            if (!tiles[row-1][col+1].isMarked())
-                neighbors.add(tiles[row-1][col+1]);
-        } catch (ArrayIndexOutOfBoundsException e) {}
+            if (!tiles[row - 1][col + 1].isMarked())
+                neighbors.add(tiles[row - 1][col + 1]);
+        } catch (ArrayIndexOutOfBoundsException e) {
+        }
 
         return neighbors;
     }

@@ -20,6 +20,8 @@ public class ComputingPhase extends GamePhaseTemplate {
         view.setMouseAdapterToTiles(tile -> null);
         view.enableStartButton(false);
 
+        model.setAfterCompute(this::end);
+
         model.compute(view.getInput(),
                 "",
                 (i, j) -> {

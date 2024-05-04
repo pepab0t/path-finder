@@ -1,27 +1,28 @@
 package dev.cerios;
 
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Queue;
 import java.util.function.BiConsumer;
 
 public class Model {
 
-    private Thread runner;
+    private Runnable afterCompute;
 
     public void compute(Marker[][] field,
                         String algorithm,
                         BiConsumer<Integer, Integer> resultObserver,
                         BiConsumer<Integer, Integer> pathObserver) {
-        runner = new Thread(() -> {
+        Thread runner = new Thread(() -> {
             Graph graph = Graph.fromField(field);
 
             List<Graph.Node> result = graph.bfs();
 
-            for (Graph.Node n : result) {
-                resultObserver.accept(n.r(), n.c());
-            }
+            result.forEach(n -> resultObserver.accept(n.r(), n.c()));
+            if (afterCompute != null) afterCompute.run();
         });
         runner.start();
+    }
+
+    public void setAfterCompute(Runnable afterCompute) {
+        this.afterCompute = afterCompute;
     }
 }
