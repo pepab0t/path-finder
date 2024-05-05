@@ -17,10 +17,14 @@ public class ComputingPhase extends GamePhaseTemplate {
 
     @Override
     public void start() {
+        view.setInfoText("Computing ...");
         view.setMouseAdapterToTiles(tile -> null);
         view.enableStartButton(false);
 
-        model.setAfterCompute(this::end);
+        model.setAfterCompute(steps -> {
+            view.setInfoText(String.format("Required %d steps", steps));
+            end();
+        });
 
         model.compute(view.getInput(),
                 "",
@@ -28,7 +32,8 @@ public class ComputingPhase extends GamePhaseTemplate {
                     Marker currentMarker = view.getMarker(i, j);
                     if (currentMarker != Marker.END && currentMarker != Marker.START) {
                         GameTile tile = view.getTile(i, j);
-                        tile.setBackground(Marker.RESULT.getColor());
+//                        tile.setBackground(Marker.RESULT.getColor());
+                        tile.stepOn();
                         tile.setMarker(Marker.RESULT);
                     }
                 },

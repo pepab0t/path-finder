@@ -16,6 +16,7 @@ public class BlankPhase extends GamePhaseTemplate{
     @Override
     public void start() {
         view.clear();
+        view.setInfoText("");
         end();
     }
 }

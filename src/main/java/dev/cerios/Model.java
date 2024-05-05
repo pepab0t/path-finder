@@ -2,10 +2,11 @@ package dev.cerios;
 
 import java.util.List;
 import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 
 public class Model {
 
-    private Runnable afterCompute;
+    private Consumer<Integer> afterCompute;
 
     public void compute(Marker[][] field,
                         String algorithm,
@@ -17,12 +18,12 @@ public class Model {
             List<Graph.Node> result = graph.bfs();
 
             result.forEach(n -> resultObserver.accept(n.r(), n.c()));
-            if (afterCompute != null) afterCompute.run();
+            if (afterCompute != null) afterCompute.accept(result.size() - 1);
         });
         runner.start();
     }
 
-    public void setAfterCompute(Runnable afterCompute) {
+    public void setAfterCompute(Consumer<Integer> afterCompute) {
         this.afterCompute = afterCompute;
     }
 }

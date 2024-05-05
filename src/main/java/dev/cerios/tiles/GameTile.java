@@ -1,9 +1,13 @@
 package dev.cerios.tiles;
 
+import dev.cerios.Config;
 import dev.cerios.Marker;
 
 import javax.swing.*;
+import java.awt.*;
 import java.util.Objects;
+
+import static dev.cerios.Config.RESULT_RADIUS;
 
 public class GameTile extends JPanel {
 
@@ -31,6 +35,20 @@ public class GameTile extends JPanel {
         this.marker = marker;
     }
 
+    public boolean setMarkerWeighted(Marker marker) {
+        boolean condition = canBeMarkedWith(marker);
+        if (condition) this.marker = marker;
+        return condition;
+    }
+
+    /**
+     * @param marker new marker
+     * @return boolean meaning if new marker has higher than current marker
+     */
+    public boolean canBeMarkedWith(Marker marker) {
+        return this.marker.getLevel() < marker.getLevel();
+    }
+
     public Marker getMarker() {
         return marker;
     }
@@ -46,6 +64,20 @@ public class GameTile extends JPanel {
     public int getCol() {
         return col;
     }
+
+    public void stepOn() {
+        Graphics g = this.getGraphics();
+        g.setColor(Config.RESULT_COLOR);
+        int d = 2 * RESULT_RADIUS;
+        g.fillOval(this.getWidth() / 2 - RESULT_RADIUS, this.getHeight() / 2 - RESULT_RADIUS, d, d);
+    }
+
+    public void clear() {
+        setBackground(Marker.NONE.getColor());
+        repaint();
+        setMarker(Marker.NONE);
+    }
+
 
     @Override
     public boolean equals(Object o) {

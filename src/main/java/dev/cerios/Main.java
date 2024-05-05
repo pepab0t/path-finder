@@ -12,7 +12,5 @@ public class Main {
         Controller controller = new Controller(window, model);
 
         controller.run();
-
-        // test commit
     }
 }

@@ -17,7 +17,14 @@ public class StartPointPhase extends GamePhaseTemplate {
 
     @Override
     public void start() {
+        view.setInfoText("Place a START POINT");
         view.setMouseAdapterToTiles(tile -> new ClickMouseAdapter(tile, Marker.START));
         view.setClickObserverToTiles(this::end);
+    }
+
+    @Override
+    protected void end() {
+        view.setInfoText("");
+        super.end();
     }
 }

@@ -16,8 +16,7 @@ public class ObstacleAdapter extends MouseAdapter {
             tile.setBackground(Marker.NONE.getColor());
             tile.setMarker(Marker.NONE);
         }
-        if (!tile.isMarked() || tile.getMarker().equals(Marker.TERRAIN)) {
-            tile.setMarker(Marker.OBSTACLE);
+        if (tile.setMarkerWeighted(Marker.OBSTACLE)) {
             tile.setBackground(Marker.OBSTACLE.getColor());
         }
     }
@@ -25,7 +24,7 @@ public class ObstacleAdapter extends MouseAdapter {
     @Override
     public void mouseEntered(MouseEvent e) {
         GameTile tile = (GameTile) e.getSource();
-        if (!tile.isMarked() || tile.getMarker().equals(Marker.TERRAIN)) {
+        if (tile.canBeMarkedWith(Marker.OBSTACLE)) {
             if (SwingUtilities.isLeftMouseButton(e)) {
                 tile.setBackground(Marker.OBSTACLE.getColor());
                 tile.setMarker(Marker.OBSTACLE);
@@ -39,11 +38,7 @@ public class ObstacleAdapter extends MouseAdapter {
     public void mouseExited(MouseEvent e) {
         GameTile tile = (GameTile) e.getSource();
         if (!SwingUtilities.isLeftMouseButton(e)) {
-            if (!tile.isMarked())
-                tile.setBackground(Marker.NONE.getColor());
-            else if (tile.getMarker().equals(Marker.TERRAIN)) {
-                tile.setBackground(Marker.TERRAIN.getColor());
-            }
+            tile.setBackground(tile.getMarker().getColor());
         }
     }
 }

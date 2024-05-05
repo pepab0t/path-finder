@@ -12,6 +12,7 @@ import java.util.*;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import static dev.cerios.Config.*;
 
@@ -20,11 +21,16 @@ public class MainView extends JFrame {
     private final Random random;
     private final TileFactory tileFactory;
 
+    private final JLabel infoLabel;
+
     private final JButton startButton;
     private final JButton restartButton;
     private final JButton randomButton;
     private final JButton obstacleButton;
-    private final JButton terrainButton;
+    private final JButton terrainButton1;
+    private final JButton terrainButton2;
+    private final JButton terrainButton3;
+    private final JButton terrainButton4;
 
     public MainView(TileFactory tileFactory) {
         this(new Random(), tileFactory);
@@ -34,22 +40,31 @@ public class MainView extends JFrame {
         this.tileFactory = tileFactory;
         this.random = random;
 
+        infoLabel = new JLabel();
+        infoLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        infoLabel.setFont(new Font("Roboto", Font.PLAIN, 24));
+
         startButton = new JButton("Start");
         startButton.setEnabled(false);
 
         restartButton = new JButton("Restart");
         randomButton = new JButton("Random");
         obstacleButton = new JButton("Obstacle");
-        terrainButton = new JButton("Terrain");
+
+        terrainButton1 = new JButton("Terrain 1");
+        terrainButton2 = new JButton("Terrain 2");
+        terrainButton3 = new JButton("Terrain 3");
+        terrainButton4 = new JButton("Terrain 4");
     }
 
     public void initGui() {
-        setTitle("Grid Game");
+        setTitle("Path finder");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout(10, 0));
 
         JPanel gridPanel = new JPanel();
         gridPanel.setLayout(new GridLayout(ROWS, COLS));
+
 
         // Initialize the grid of panels
         for (int i = 0; i < ROWS; i++) {
@@ -67,11 +82,16 @@ public class MainView extends JFrame {
         buttonPanel.add(restartButton);
         buttonPanel.add(randomButton);
         buttonPanel.add(obstacleButton);
-        buttonPanel.add(terrainButton);
+
+        buttonPanel.add(terrainButton1);
+        buttonPanel.add(terrainButton2);
+        buttonPanel.add(terrainButton3);
+        buttonPanel.add(terrainButton4);
 
         // Add the grid panel and button panel to the frame
         add(gridPanel, BorderLayout.CENTER);
         add(buttonPanel, BorderLayout.EAST);
+        add(infoLabel, BorderLayout.NORTH);
     }
 
     public void connectStartButton(ActionListener listener) {
@@ -96,8 +116,20 @@ public class MainView extends JFrame {
         disconnectButton(obstacleButton);
     }
 
-    public void disconnectTerrainButton() {
-        disconnectButton(terrainButton);
+    public void disconnectTerrainButton1() {
+        disconnectButton(terrainButton1);
+    }
+
+    public void disconnectTerrainButton2() {
+        disconnectButton(terrainButton2);
+    }
+
+    public void disconnectTerrainButton3() {
+        disconnectButton(terrainButton3);
+    }
+
+    public void disconnectTerrainButton4() {
+        disconnectButton(terrainButton4);
     }
 
     public void connectRestartButton(ActionListener listener) {
@@ -108,13 +140,29 @@ public class MainView extends JFrame {
         obstacleButton.addActionListener(listener);
     }
 
-    public void connectTerrainButton(ActionListener listener) {
-        terrainButton.addActionListener(listener);
+    public void connectTerrainButton1(ActionListener listener) {
+        terrainButton1.addActionListener(listener);
+    }
+
+    public void connectTerrainButton2(ActionListener listener) {
+        terrainButton2.addActionListener(listener);
+    }
+
+    public void connectTerrainButton3(ActionListener listener) {
+        terrainButton3.addActionListener(listener);
+    }
+
+    public void connectTerrainButton4(ActionListener listener) {
+        terrainButton4.addActionListener(listener);
+    }
+
+    public void setInfoText(String text) {
+        infoLabel.setText(text);
     }
 
     public void generateRandomObstacles() {
         applyToAllTiles(tile -> {
-            if (tile.getMarker() == Marker.OBSTACLE){
+            if (tile.getMarker() == Marker.OBSTACLE) {
                 tile.setBackground(Marker.NONE.getColor());
                 tile.setMarker(Marker.NONE);
             }
@@ -170,7 +218,7 @@ public class MainView extends JFrame {
     }
 
     public void enableTerrainButton(boolean state) {
-        terrainButton.setEnabled(state);
+        terrainButton1.setEnabled(state);
     }
 
     public void markTile(int i, int j, Marker marker) {
@@ -186,62 +234,28 @@ public class MainView extends JFrame {
         }
     }
 
+    public Collection<GameTile> getNeighbors(int row, int col) {
+        List<GameTile> neighbors = new ArrayList<>(AREA_VECTORS.length);
+        for (int[] vector : AREA_VECTORS) {
+            try {
+                neighbors.add(tiles[row + vector[0]][col + vector[1]]);
+            } catch (ArrayIndexOutOfBoundsException ignored) {}
+        }
+        return neighbors;
+    }
+
+    public Collection<GameTile> getNeighbors(GameTile tile) {
+        return getNeighbors(tile.getRow(), tile.getCol());
+    }
+
     public Collection<GameTile> getUnmarkedNeighbors(GameTile tile) {
         return getUnmarkedNeighbors(tile.getRow(), tile.getCol());
     }
 
     public Collection<GameTile> getUnmarkedNeighbors(int row, int col) {
-        Collection<GameTile> neighbors = new HashSet<>();
-
-        try {
-            if (!tiles[row + 1][col].isMarked())
-                neighbors.add(tiles[row + 1][col]);
-        } catch (ArrayIndexOutOfBoundsException e) {
-        }
-
-        try {
-            if (!tiles[row + 1][col + 1].isMarked())
-                neighbors.add(tiles[row + 1][col + 1]);
-        } catch (ArrayIndexOutOfBoundsException e) {
-        }
-
-        try {
-            if (!tiles[row + 1][col - 1].isMarked())
-                neighbors.add(tiles[row + 1][col - 1]);
-        } catch (ArrayIndexOutOfBoundsException e) {
-        }
-
-        try {
-            if (!tiles[row][col - 1].isMarked())
-                neighbors.add(tiles[row][col - 1]);
-        } catch (ArrayIndexOutOfBoundsException e) {
-        }
-
-        try {
-            if (!tiles[row][col + 1].isMarked())
-                neighbors.add(tiles[row][col + 1]);
-        } catch (ArrayIndexOutOfBoundsException e) {
-        }
-
-        try {
-            if (!tiles[row - 1][col - 1].isMarked())
-                neighbors.add(tiles[row - 1][col - 1]);
-        } catch (ArrayIndexOutOfBoundsException e) {
-        }
-
-        try {
-            if (!tiles[row - 1][col].isMarked())
-                neighbors.add(tiles[row - 1][col]);
-        } catch (ArrayIndexOutOfBoundsException e) {
-        }
-
-        try {
-            if (!tiles[row - 1][col + 1].isMarked())
-                neighbors.add(tiles[row - 1][col + 1]);
-        } catch (ArrayIndexOutOfBoundsException e) {
-        }
-
-        return neighbors;
+        return getNeighbors(row, col).stream()
+                .filter(t -> t.getMarker().equals(Marker.NONE))
+                .collect(Collectors.toSet());
     }
 
     public Marker getMarker(int i, int j) {
@@ -265,10 +279,7 @@ public class MainView extends JFrame {
     }
 
     public void clear() {
-        applyToAllTiles(tile -> {
-            tile.setBackground(Marker.NONE.getColor());
-            tile.setMarker(Marker.NONE);
-        });
+        applyToAllTiles(GameTile::clear);
     }
 }
 

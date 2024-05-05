@@ -18,6 +18,7 @@ public class EndPointPhase extends GamePhaseTemplate {
 
     @Override
     public void start() {
+        view.setInfoText("Place an END POINT");
         view.setMouseAdapterToTiles(tile -> new ClickMouseAdapter(tile, Marker.END));
         view.setClickObserverToTiles(this::end);
     }

@@ -38,9 +38,9 @@ public class Graph {
             for (int j = 0; j < cols; j++) {
                 if (field[i][j] == Marker.OBSTACLE) continue;
 
-                for (int k = 0; k < Config.dr.length; k++) {
-                    int rr = i + Config.dr[k];
-                    int cc = j + Config.dc[k];
+                for (int[] vector : Config.SEARCH_VECTORS) {
+                    int rr = i + vector[0];
+                    int cc = j + vector[1];
 
                     if (rr >= rows || rr < 0 || cc >= cols || cc < 0)
                         continue;
