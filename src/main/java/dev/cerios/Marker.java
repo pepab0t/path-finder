@@ -6,8 +6,8 @@ import static dev.cerios.Config.TERRAIN_LEVEL;
 
 public enum Marker {
     NONE(Config.DEFAULT_COLOR, 1),
-    START(Config.START_COLOR, 100),
-    END(Config.END_COLOR, 100),
+    START(Config.START_COLOR, 1),
+    END(Config.END_COLOR, 1),
     OBSTACLE(Config.OBSTACLE_COLOR, 80),
     PATH(Config.PATH_COLOR, 50),
     RESULT(Config.RESULT_COLOR, 90),

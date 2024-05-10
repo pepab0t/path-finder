@@ -13,9 +13,9 @@ public class Model {
                         BiConsumer<Integer, Integer> resultObserver,
                         BiConsumer<Integer, Integer> pathObserver) {
         Thread runner = new Thread(() -> {
-            Graph graph = Graph.fromField(field);
+            Graph<Position> graph = Graph.fromField(field);
 
-            List<Graph.Node> result = graph.bfs();
+            List<Position> result = graph.bfs();
 
             result.forEach(n -> resultObserver.accept(n.r(), n.c()));
             if (afterCompute != null) afterCompute.accept(result.size() - 1);

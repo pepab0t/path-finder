@@ -30,7 +30,7 @@ public class ComputingPhase extends GamePhaseTemplate {
                 "",
                 (i, j) -> {
                     Marker currentMarker = view.getMarker(i, j);
-                    if (currentMarker != Marker.END && currentMarker != Marker.START) {
+                    if (currentMarker != Marker.START) {
                         GameTile tile = view.getTile(i, j);
 //                        tile.setBackground(Marker.RESULT.getColor());
                         tile.stepOn();
@@ -38,6 +38,11 @@ public class ComputingPhase extends GamePhaseTemplate {
                     }
                 },
                 (i, j) -> {
+                    try {
+                        Thread.sleep(10);
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
                     view.getTile(i, j).setBackground(Marker.PATH.getColor());
                     System.out.println(i + ", " + j);
                 });
