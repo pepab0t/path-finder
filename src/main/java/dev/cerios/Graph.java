@@ -4,6 +4,7 @@ import dev.cerios.matrix.ArrayMatrix;
 import dev.cerios.matrix.IntMatrix;
 
 import java.util.*;
+import java.util.function.BiFunction;
 
 public class Graph {
     private final Node[] indexNodes;
@@ -36,7 +37,8 @@ public class Graph {
 
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < cols; j++) {
-                if (field[i][j] == Marker.OBSTACLE) continue;
+                Marker current = field[i][j];
+                if (current == Marker.OBSTACLE) continue;
 
                 for (int[] vector : Config.SEARCH_VECTORS) {
                     int rr = i + vector[0];
@@ -45,12 +47,17 @@ public class Graph {
                     if (rr >= rows || rr < 0 || cc >= cols || cc < 0)
                         continue;
 
-                    var neighbor = field[rr][cc];
+                    Marker neighbor = field[rr][cc];
                     if (neighbor == Marker.OBSTACLE) {
                         continue;
                     }
 
-                    graph.addEdge(graph.countIndex(i, j), graph.countIndex(rr, cc));
+                    BiFunction<Integer, Integer, Integer> transitionFunc = current.getLevel() >= neighbor.getLevel() ?
+                            Math::min : Math::max;
+
+                    graph.addEdge(graph.countIndex(i, j),
+                            graph.countIndex(rr, cc),
+                            transitionFunc.apply(current.getLevel(), neighbor.getLevel()));
                 }
             }
         }
@@ -78,9 +85,8 @@ public class Graph {
         indexNodes[index] = node;
     }
 
-    public void addEdge(int index1, int index2) {
-        matrix.set(index1, index2, 1);
-        matrix.set(index2, index1, 1);
+    public void addEdge(int index1, int index2, int weight) {
+        matrix.set(index1, index2, weight);
     }
 
     public List<Node> bfs() {
