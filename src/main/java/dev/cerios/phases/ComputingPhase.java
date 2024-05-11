@@ -1,17 +1,17 @@
 package dev.cerios.phases;
 
-import dev.cerios.MainView;
+import dev.cerios.View;
 import dev.cerios.Marker;
 import dev.cerios.Model;
 import dev.cerios.tiles.GameTile;
 
 public class ComputingPhase extends GamePhaseTemplate {
 
-    public ComputingPhase(MainView view, Model model) {
+    public ComputingPhase(View view, Model model) {
         this(view, model, null);
     }
 
-    public ComputingPhase(MainView view, Model model, Runnable endCallback) {
+    public ComputingPhase(View view, Model model, Runnable endCallback) {
         super(view, model, endCallback);
     }
 
@@ -26,7 +26,7 @@ public class ComputingPhase extends GamePhaseTemplate {
             end();
         });
 
-        model.compute(view.getInput(),
+        model.compute(view.getField(),
                 "",
                 (i, j) -> {
                     Marker currentMarker = view.getMarker(i, j);
@@ -51,6 +51,7 @@ public class ComputingPhase extends GamePhaseTemplate {
     @Override
     protected void end() {
         view.enableStartButton(true);
+        view.enableLastFieldButton(true);
         super.end();
     }
 }

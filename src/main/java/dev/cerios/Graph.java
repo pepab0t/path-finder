@@ -3,9 +3,7 @@ package dev.cerios;
 import dev.cerios.matrix.ArrayMatrix;
 import dev.cerios.matrix.IntMatrix;
 
-import java.lang.reflect.Array;
 import java.util.*;
-import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.stream.IntStream;
 
@@ -20,9 +18,9 @@ public class Graph<T> {
 
     public Graph(int vertices) {
         this.matrix = new ArrayMatrix(vertices, vertices);
-        this.nodes = (Node<T>[]) Array.newInstance(Node.class, vertices);
+        this.nodes = (Node<T>[]) new Node[vertices];
         this.visited = new boolean[vertices];
-        this.valueIndex = new HashMap<>();
+        this.valueIndex = new HashMap<>(vertices);
     }
 
     public static Graph<Position> fromField(Marker[][] field) {
@@ -204,7 +202,9 @@ public class Graph<T> {
         int lowestIndex = -1;
 
         for (int i = 0; i < dists.length; i++) {
-            if (dists[i] -1 < lowest && !visited[i]) {
+            if (visited[i]) continue;
+
+            if (dists[i] < lowest || (dists[i] == lowest && lowestIndex == -1)) {
                 lowest = dists[i];
                 lowestIndex = i;
             }

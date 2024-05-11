@@ -4,7 +4,7 @@ package dev.cerios.phases;
 import dev.cerios.Model;
 import dev.cerios.mousehandlers.ObstacleAdapter;
 import dev.cerios.mousehandlers.TerrainAdapter;
-import dev.cerios.MainView;
+import dev.cerios.View;
 import dev.cerios.Marker;
 
 import java.awt.event.MouseAdapter;
@@ -19,11 +19,11 @@ public class ObstaclePhase extends GamePhaseTemplate {
     private MouseAdapter terrainAdapter3;
     private MouseAdapter terrainAdapter4;
 
-    public ObstaclePhase(MainView view, Model model) {
+    public ObstaclePhase(View view, Model model) {
         this(view, model, null);
     }
 
-    public ObstaclePhase(MainView view, Model model, Runnable endCallback) {
+    public ObstaclePhase(View view, Model model, Runnable endCallback) {
         super(view, model, endCallback);
         this.obstacleAdapter = new ObstacleAdapter();
         this.terrainAdapter1 = new TerrainAdapter(view, Marker.TERRAIN_1);
@@ -50,7 +50,7 @@ public class ObstaclePhase extends GamePhaseTemplate {
         view.connectTerrainButton4(e -> view.setMouseAdapterToTiles(this.terrainAdapter4));
     }
 
-    private void end(MainView view) {
+    private void end(View view) {
         view.disconnectStartButton();
         view.disconnectTerrainButton1();
         view.disconnectObstacleButton();

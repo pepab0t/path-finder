@@ -1,8 +1,7 @@
 package dev.cerios.mousehandlers;
 
 import dev.cerios.Config;
-import dev.cerios.Main;
-import dev.cerios.MainView;
+import dev.cerios.View;
 import dev.cerios.Marker;
 import dev.cerios.tiles.GameTile;
 
@@ -14,10 +13,10 @@ import static dev.cerios.Config.TERRAIN_LEVEL;
 
 public class TerrainAdapter extends MouseAdapter {
 
-    private final MainView view;
+    private final View view;
     private final Marker marker;
 
-    public TerrainAdapter(MainView view, Marker marker) {
+    public TerrainAdapter(View view, Marker marker) {
         this.view = view;
         this.marker = marker;
     }

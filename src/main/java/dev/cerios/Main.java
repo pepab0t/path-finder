@@ -6,7 +6,7 @@ import dev.cerios.tiles.TileFactory;
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
     public static void main(String[] args) {
-        MainView window = new MainView(new TileFactory());
+        View window = new View(new TileFactory());
         Model model = new Model();
 
         Controller controller = new Controller(window, model);
