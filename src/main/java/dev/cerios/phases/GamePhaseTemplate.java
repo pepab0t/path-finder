@@ -1,18 +1,18 @@
 package dev.cerios.phases;
 
-import dev.cerios.MainView;
+import dev.cerios.View;
 import dev.cerios.Model;
 
 public abstract class GamePhaseTemplate implements GamePhase {
     protected Runnable endCallback;
-    protected final MainView view;
+    protected final View view;
     protected final Model model;
 
-    public GamePhaseTemplate(MainView view, Model model) {
+    public GamePhaseTemplate(View view, Model model) {
         this(view, model, null);
     }
 
-    public GamePhaseTemplate(MainView view, Model model, Runnable endCallback) {
+    public GamePhaseTemplate(View view, Model model, Runnable endCallback) {
         this.view = view;
         this.model = model;
         this.endCallback = endCallback;

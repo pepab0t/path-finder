@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 
 import static dev.cerios.Config.*;
 
-public class MainView extends JFrame {
+public class View extends JFrame {
     private final GameTile[][] tiles = new GameTile[ROWS][COLS];
     private final Random random;
     private final TileFactory tileFactory;
@@ -31,12 +31,13 @@ public class MainView extends JFrame {
     private final JButton terrainButton2;
     private final JButton terrainButton3;
     private final JButton terrainButton4;
+    private final JButton lastFieldButton;
 
-    public MainView(TileFactory tileFactory) {
+    public View(TileFactory tileFactory) {
         this(new Random(), tileFactory);
     }
 
-    public MainView(Random random, TileFactory tileFactory) {
+    public View(Random random, TileFactory tileFactory) {
         this.tileFactory = tileFactory;
         this.random = random;
 
@@ -55,6 +56,9 @@ public class MainView extends JFrame {
         terrainButton2 = new JButton("Terrain 2");
         terrainButton3 = new JButton("Terrain 3");
         terrainButton4 = new JButton("Terrain 4");
+
+        lastFieldButton = new JButton("Last Field");
+        lastFieldButton.setEnabled(false);
     }
 
     public void initGui() {
@@ -87,6 +91,8 @@ public class MainView extends JFrame {
         buttonPanel.add(terrainButton2);
         buttonPanel.add(terrainButton3);
         buttonPanel.add(terrainButton4);
+
+        buttonPanel.add(lastFieldButton);
 
         // Add the grid panel and button panel to the frame
         add(gridPanel, BorderLayout.CENTER);
@@ -156,6 +162,10 @@ public class MainView extends JFrame {
         terrainButton4.addActionListener(listener);
     }
 
+    public void connectLastFieldButton(ActionListener listener) {
+        lastFieldButton.addActionListener(listener);
+    }
+
     public void setInfoText(String text) {
         infoLabel.setText(text);
     }
@@ -221,6 +231,10 @@ public class MainView extends JFrame {
         terrainButton1.setEnabled(state);
     }
 
+    public void enableLastFieldButton(boolean state) {
+        lastFieldButton.setEnabled(state);
+    }
+
     public void markTile(int i, int j, Marker marker) {
         tiles[i][j].setMarker(marker);
     }
@@ -266,7 +280,7 @@ public class MainView extends JFrame {
         return "bfs";
     }
 
-    public Marker[][] getInput() {
+    public Marker[][] getField() {
         Marker[][] markers = new Marker[ROWS][COLS];
 
         for (int i = 0; i < ROWS; i++) {
@@ -276,6 +290,23 @@ public class MainView extends JFrame {
         }
 
         return markers;
+    }
+
+    public void setField(Marker[][] field) {
+        if (field.length != ROWS || field[0].length != COLS) {
+            throw new RuntimeException("Invalid field size");
+        }
+
+        for (int i = 0; i < ROWS; i++) {
+            for (int j = 0; j < COLS; j++) {
+                var tile = tiles[i][j];
+                var marker = field[i][j];
+
+                tile.setMarker(marker);
+                tile.setBackground(marker.getColor());
+                tile.repaint();
+            }
+        }
     }
 
     public void clear() {

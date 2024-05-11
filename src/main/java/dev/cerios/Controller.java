@@ -2,16 +2,20 @@ package dev.cerios;
 
 import dev.cerios.phases.*;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 
 public class Controller {
 
-    private final MainView view;
+    private final View view;
     private int nextPhaseIndex = 0;
 
-    private final LinkedList<GamePhase> phases = new LinkedList<>();
+    private final Object lock = new Object();
 
-    public Controller(MainView view, Model model) {
+    private final List<GamePhase> phases = new ArrayList<>(7);
+
+    public Controller(View view, Model model) {
         this.view = view;
 
         phases.add(new BlankPhase(view, model, this::nextPhase));
@@ -28,10 +32,18 @@ public class Controller {
         view.connectRandomButton(e -> {
             view.generateRandomObstacles();
         });
+
+        view.connectLastFieldButton(e -> {
+            view.setField(model.getLastField());
+            nextPhaseIndex = 3;
+            nextPhase();
+        });
     }
 
     private void nextPhase() {
-        phases.get(nextPhaseIndex++).start();
+        synchronized (lock) {
+            phases.get(nextPhaseIndex++).start();
+        }
     }
 
     public void run() {

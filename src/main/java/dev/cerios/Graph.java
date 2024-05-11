@@ -204,7 +204,9 @@ public class Graph<T> {
         int lowestIndex = -1;
 
         for (int i = 0; i < dists.length; i++) {
-            if (dists[i] -1 < lowest && !visited[i]) {
+            if (visited[i]) continue;
+
+            if (dists[i] < lowest || (dists[i] == lowest && lowestIndex == -1)) {
                 lowest = dists[i];
                 lowestIndex = i;
             }
